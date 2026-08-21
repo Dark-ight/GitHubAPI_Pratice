@@ -3,6 +3,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -55,8 +57,7 @@ public class GitHub_Activity {
 
     }
 
-private static void API(String username) {
-
+    private static void API(String username) {
         try {
             HttpClient client = HttpClient.newHttpClient();
 
@@ -68,21 +69,18 @@ private static void API(String username) {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             System.out.println("Status code: " + response.statusCode());
-            if(response.statusCode() == 404) {
+            if (response.statusCode() == 404) {
                 System.out.println("Invalid username");
-            } else if(response.statusCode() == 200) {
-                if(response.body().equals("[]")) {
+            } else if (response.statusCode() == 200) {
+                if (response.body().equals("[]")) {
                     System.out.println("Unable to find information of this username");
                     System.out.println("No recent activity from this username");
                 } else {
-                    System.out.println(response.body());
+                    UserInfo(response);
                 }
             }
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(response.body());
 
-            System.out.println(root.get(0));
 
         } catch (IOException e) {
             System.out.println("Unable to access to this username" +
@@ -90,9 +88,31 @@ private static void API(String username) {
         } catch (InterruptedException e) {
             System.out.println("The request was interrupted");
         }
-
-
-
-
     }
+
+    private static void UserInfo(HttpResponse<String> response) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response.body());
+
+            int count = 0;
+            for(int i = 0; i < root.size(); i++) {
+                System.out.println(root.get(i).get("type"));
+                if(root.get(i).get("type").equals("'PushEvent'")) {
+                    System.out.println("Hello");
+                }
+            }
+            System.out.println(root.get(0).get("type").equals("'PushEvent'"));
+
+
+
+
+
+        } catch (JsonProcessingException e) {
+            System.out.println("Something wrong during processing");
+        }
+    }
+
+
+
 }
