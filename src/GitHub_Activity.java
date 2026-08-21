@@ -16,7 +16,8 @@ public class GitHub_Activity {
             - Fetch and retrieve GitHub API
             - Analyze the API and return value back to the user
          */
-
+        // Version 1
+        /*
         try {
 
             String username = args[0];
@@ -35,6 +36,21 @@ public class GitHub_Activity {
             System.out.println("Run the command again to enter. Thank You!");
         }
 
+         */
+
+        if(args.length == 0) {
+            System.out.println("Empty username");
+        } else if (args.length > 1) {
+            System.out.println("Out of bound, Please try again!");
+        } else {
+            String username = args[0];
+
+            if(username.isBlank()) {
+                System.out.println("Please enter your GitHub's username correctly");
+            } else {
+                API(username);
+            }
+        }
 
     }
 
@@ -53,17 +69,33 @@ private static void API(String username) {
 
             System.out.println("Status code: " + response.statusCode());
 
+            //V1
+            /*
             if(response.body().equals("[]")) {
                 System.out.println("Invalid or unable to find this username");
             } else {
                 System.out.println(response.body());
             }
+             */
+
+            if(response.statusCode() == 404) {
+                System.out.println("Invalid username");
+            } else if(response.statusCode() == 200) {
+                if(response.body().equals("[]")) {
+                    System.out.println("Unable to find information of this username");
+                    System.out.println("No recent activity from this username");
+                } else {
+                    System.out.println(response.body());
+                }
+            }
+
+
 
         } catch (IOException e) {
             System.out.println("Unable to access to this username" +
                     "\nThe username might be private for some reasons");
         } catch (InterruptedException e) {
-            System.out.println("Something wrong");
+            System.out.println("The request was interrupted");
         }
 
     }
