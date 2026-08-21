@@ -32,3 +32,4 @@ bin/
 ### This Project ###
 .idea/
 GitHubAPI_Practice.iml
+src/*.class
