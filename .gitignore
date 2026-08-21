@@ -31,5 +31,8 @@ bin/
 
 ### This Project ###
 .idea/
-GitHubAPI_Practice.iml
+*.iml
 src/*.class
+
+### Maven ###
+target/
