@@ -98,13 +98,14 @@ public class GitHub_Activity {
             int count = 0;
             for(int i = 0; i < root.size(); i++) {
                 System.out.println(root.get(i).get("type"));
-                if(root.get(i).get("type").equals("'PushEvent'")) {
-                    System.out.println("Hello");
+                if(root.get(i).get("type").asText().equals("PushEvent")) {
+                    count++;
                 }
             }
-            System.out.println(root.get(0).get("type").equals("'PushEvent'"));
+            System.out.println(count);
+            String repoName = root.get(0).get("repo").get("name").asText();
 
-
+            System.out.println("The user has pushed " + count + " commits to " + repoName);
 
 
 
