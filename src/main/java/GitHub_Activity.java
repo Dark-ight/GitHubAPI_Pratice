@@ -47,73 +47,28 @@ public class GitHub_Activity {
             System.out.println("Out of bound, Please try again!");
         } else {
             String username = args[0];
-
             if(username.isBlank()) {
                 System.out.println("Please enter your GitHub's username correctly");
             } else {
-                API(username);
+                clientUsername(username);
             }
         }
 
+
+
+
     }
 
-    private static void API(String username) {
-        try {
-            HttpClient client = HttpClient.newHttpClient();
+    private static void clientUsername(String username) {
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://api.github.com/users/" + username + "/events"))
-                    .GET()
-                    .build();
+        HttpClient client = HttpClient.newHttpClient();
+        ObjectMapper mapper = new ObjectMapper();
+        GitHubAPI gitHub = new GitHubAPI(client, mapper);
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(gitHub.getProfile(username).get("repos_url"));
+        System.out.println(gitHub.getEvents(username).get(0).get("type"));
+        System.out.println(gitHub.getRepos(username).get(0));
 
-            System.out.println("Status code: " + response.statusCode());
-            if (response.statusCode() == 404) {
-                System.out.println("Invalid username");
-            } else if (response.statusCode() == 200) {
-                if (response.body().equals("[]")) {
-                    System.out.println("Unable to find information of this username");
-                    System.out.println("No recent activity from this username");
-                } else {
-                    UserInfo(response);
-                }
-            }
-
-
-
-        } catch (IOException e) {
-            System.out.println("Unable to access to this username" +
-                    "\nThe username might be private for some reasons");
-        } catch (InterruptedException e) {
-            System.out.println("The request was interrupted");
-        }
     }
-
-    private static void UserInfo(HttpResponse<String> response) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(response.body());
-
-            int count = 0;
-            for(int i = 0; i < root.size(); i++) {
-                System.out.println(root.get(i).get("type"));
-                if(root.get(i).get("type").asText().equals("PushEvent")) {
-                    count++;
-                }
-            }
-            System.out.println(count);
-            String repoName = root.get(0).get("repo").get("name").asText();
-
-            System.out.println("The user has pushed " + count + " commits to " + repoName);
-
-
-
-        } catch (JsonProcessingException e) {
-            System.out.println("Something wrong during processing");
-        }
-    }
-
-
 
 }
