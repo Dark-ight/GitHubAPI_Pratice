@@ -36,6 +36,8 @@ public class GitHubAPI {
                 } else {
                     root = mapper.readTree(response.body());
                 }
+            } else if (response.statusCode() == 403) {
+                System.out.println("Sorry, your API had hit rate limits");
             }
 
         } catch (IOException e) {
@@ -66,6 +68,8 @@ public class GitHubAPI {
                 } else {
                     root = mapper.readTree(response.body());
                 }
+            } else if (response.statusCode() == 403) {
+                System.out.println("Sorry, your API had hit rate limits");
             }
 
         } catch (IOException e) {
@@ -96,6 +100,8 @@ public class GitHubAPI {
                 } else {
                     root = mapper.readTree(response.body());
                 }
+            } else if (response.statusCode() == 403) {
+                System.out.println("Sorry, your API had hit rate limits");
             }
 
         } catch (IOException e) {

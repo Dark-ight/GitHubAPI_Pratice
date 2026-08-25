@@ -1,10 +1,5 @@
-import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,24 +45,57 @@ public class GitHub_Activity {
             if(username.isBlank()) {
                 System.out.println("Please enter your GitHub's username correctly");
             } else {
-                clientUsername(username);
+                userDisplay(username);
             }
         }
-
-
-
-
     }
 
-    private static void clientUsername(String username) {
+    private static void userDisplay(String username) throws NullPointerException{
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            ObjectMapper mapper = new ObjectMapper();
+            GitHubAPI gitHub = new GitHubAPI(client, mapper);
 
-        HttpClient client = HttpClient.newHttpClient();
-        ObjectMapper mapper = new ObjectMapper();
-        GitHubAPI gitHub = new GitHubAPI(client, mapper);
+            JsonNode profile = gitHub.getProfile(username);
+            JsonNode repos = gitHub.getRepos(username);
+            JsonNode events = gitHub.getEvents(username);
 
-        System.out.println(gitHub.getProfile(username).get("repos_url"));
-        System.out.println(gitHub.getEvents(username).get(0).get("type"));
-        System.out.println(gitHub.getRepos(username).get(0));
+
+            String loginName = gitHub.getProfile(username).get("login").asText();
+            String reposNum = gitHub.getProfile(username).get("public_repos").asText();
+
+            String[] typeArray = new String[2];
+            String[] repoArray = new String[gitHub.getProfile(username).get("public_repos").asInt()];
+            int[] countArray = new int[gitHub.getProfile(username).get("public_repos").asInt()];
+
+            //Load repos into array - done
+            for (int i = 0; i < gitHub.getRepos(username).size(); i++) {
+                repoArray[i] = gitHub.getRepos(username).get(i).get("full_name").asText();
+                System.out.println(repoArray[i]);
+            }
+            System.out.println(gitHub.getEvents(username).size());
+
+
+            for (int i = 0; i < gitHub.getEvents(username).size(); i++) {
+                for (int j = 0; j < repoArray.length; j++) {
+                    if (gitHub.getEvents(username).get(i).get("repo").get("name").asText().equals(repoArray[j]) &&
+                            gitHub.getEvents(username).get(i).get("type").asText().equals("PushEvent")) {
+                        countArray[j]++;
+                    }
+                }
+            }
+
+            for (int i = 0; i < gitHub.getRepos(username).size(); i++) {
+                System.out.println("This user pushed " + repoArray[i] + " commits on this " + repoArray[i]);
+            }
+
+            System.out.println("Username: " + loginName);
+            System.out.println("Total public repositories: " + reposNum);
+
+        } catch (NullPointerException e) {
+
+            System.out.println("The field in the response may not exist or something wrong with your API");
+        }
 
     }
 
