@@ -26,7 +26,7 @@ public class GitHubAPI {
                     build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("Profile: " + response.statusCode());
+            //System.out.println("Profile: " + response.statusCode());
             if (response.statusCode() == 404) {
                 System.out.println("Invalid username");
             } else if (response.statusCode() == 200) {
@@ -58,7 +58,7 @@ public class GitHubAPI {
                     build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("Events: " + response.statusCode());
+            //System.out.println("Events: " + response.statusCode());
             if (response.statusCode() == 404) {
                 System.out.println("Invalid username");
             } else if (response.statusCode() == 200) {
@@ -90,7 +90,7 @@ public class GitHubAPI {
                     build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("Repos: " + response.statusCode());
+            //System.out.println("Repos: " + response.statusCode());
             if (response.statusCode() == 404) {
                 System.out.println("Invalid username");
             } else if (response.statusCode() == 200) {
