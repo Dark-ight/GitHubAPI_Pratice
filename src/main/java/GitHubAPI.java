@@ -31,7 +31,6 @@ public class GitHubAPI {
                 System.out.println("Invalid username");
             } else if (response.statusCode() == 200) {
                 if (response.body().equals("[]")) {
-                    System.out.println("Unable to find information of this username");
                     System.out.println("No recent activity from this username");
                 } else {
                     root = mapper.readTree(response.body());
@@ -63,13 +62,12 @@ public class GitHubAPI {
                 System.out.println("Invalid username");
             } else if (response.statusCode() == 200) {
                 if (response.body().equals("[]")) {
-                    System.out.println("Unable to find information of this username");
-                    System.out.println("No recent activity from this username");
+                    System.out.println("- No recent activity from this username");
                 } else {
                     root = mapper.readTree(response.body());
                 }
             } else if (response.statusCode() == 403) {
-                System.out.println("Sorry, your API had hit rate limits");
+                System.out.println("- Sorry, your API had hit rate limits");
             }
 
         } catch (IOException e) {
@@ -95,13 +93,12 @@ public class GitHubAPI {
                 System.out.println("Invalid username");
             } else if (response.statusCode() == 200) {
                 if (response.body().equals("[]")) {
-                    System.out.println("Unable to find information of this username");
-                    System.out.println("No recent activity from this username");
+                    System.out.println("- No recent activity from this username");
                 } else {
                     root = mapper.readTree(response.body());
                 }
             } else if (response.statusCode() == 403) {
-                System.out.println("Sorry, your API had hit rate limits");
+                System.out.println("- Sorry, your API had hit rate limits");
             }
 
         } catch (IOException e) {
