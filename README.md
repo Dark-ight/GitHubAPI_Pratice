@@ -51,3 +51,63 @@ GitHubAPI_Practice/
 ├── mvnw.cmd
 ├── pom.xml
 └── README.md
+```
+
+## Requirements
+
+- Java JDK
+- Git
+
+Note: You **do not need to install Maven** because this repository includes the Maven Wrapper.
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/your-username/GitHubAPI_Practice.git
+cd GitHubAPI_Practice
+```
+
+## Setup
+
+After cloning the repository, make sure Java is installed, and check your Java installation:
+
+```bash
+java -version
+```
+
+Note: The project uses the Maven Wrapper, so Maven does not need to be installed separately.
+
+## Build the Project
+
+On Windows, compile the project with:
+
+```bash
+.\mvnw.cmd compile
+```
+
+This will:
+
+- Download the required Maven dependencies
+- Compile the Java source code
+- Create the target/ directory
+
+## API Features
+
+The application retrieves information from GitHub for:
+
+- User profiles
+- Public repositories
+- Public events
+
+Note: It also analyzes PushEvent activity to determine how many push events are associated with each repository.
+
+## Future Improvements
+
+Possible future improvements include:
+
+- API pagination
+- GitHub authentication
+- More detailed error handling
+- Additional GitHub API endpoints
+- More extensive unit testing
+- Improved command-line output
